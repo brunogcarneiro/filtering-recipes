@@ -22,8 +22,6 @@ const RecipeItem = ({item, searchString}) => {
         }
     }
 
-    const pack = text => ({__html: text})
-
     return (
         <div className="col-sm-3 mt-4">
             <div className="card">
@@ -33,8 +31,7 @@ const RecipeItem = ({item, searchString}) => {
                         highlight(pItem.title)
                     }</h5>
                     <p className="card-text">
-                        <strong>Ingredients: </strong>
-                        {highlight(pItem.ingredients)}
+                        <strong>Ingredients: </strong>{highlight(pItem.ingredients)}
                     </p>
                 </div>
             </div>
