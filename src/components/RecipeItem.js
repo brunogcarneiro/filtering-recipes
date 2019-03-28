@@ -6,12 +6,19 @@ const RecipeItem = ({item, searchString}) => {
     const pSearchString = searchString || ''
     
     const highlight = (text) => {
-        const regex = new RegExp(pSearchString, 'gi')
-        const highlighted = text.replace(regex, replaceFunc)
-        return highlighted
+        const regex = new RegExp(`(${pSearchString})`, 'gi')
+        const parts = text.split(regex)
 
-        function replaceFunc(match){
-            return `<mark>${match}</mark>`
+        return <span>{parts.map(callback)}</span>
+
+        function callback(part, idx){
+            return shouldHighlight(part)
+                        ? <mark key={idx}>{part}</mark>
+                        : part
+        }
+
+        function shouldHighlight(part){
+            return part.toLowerCase() === pSearchString.toLowerCase();
         }
     }
 
@@ -22,12 +29,13 @@ const RecipeItem = ({item, searchString}) => {
             <div className="card">
                 <img className="card-img-top img-fluid" src={pItem.thumbnail} alt={pItem.title} />
                 <div className="card-body">
-                    <h5 className="card-title" dangerouslySetInnerHTML={
-                        pack(highlight(pItem.title))
-                    }/>
-                    <p className="card-text" dangerouslySetInnerHTML={
-                        pack('<strong>Ingredients: </strong>'+highlight(pItem.ingredients))
-                    }/>
+                    <h5 className="card-title">{
+                        highlight(pItem.title)
+                    }</h5>
+                    <p className="card-text">
+                        <strong>Ingredients: </strong>
+                        {highlight(pItem.ingredients)}
+                    </p>
                 </div>
             </div>
         </div>
